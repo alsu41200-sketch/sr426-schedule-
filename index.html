@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#f5f7fb" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="СР-426" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-180.png" />
+<title>СР-426 — Расписание</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#101828;--muted:#667085;--line:#e5e7eb;--blue:#3478f6;--blue2:#eaf2ff;--green:#12b76a;--green2:#eafaf2;--purple:#7a5af8;--purple2:#f1edff;--orange:#f79009;--orange2:#fff5e8;--shadow:0 8px 30px rgba(16,24,40,.07)}
+*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{max-width:560px;margin:0 auto;padding:22px 18px 100px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.title{font-size:32px;line-height:1.05;font-weight:800;letter-spacing:-.7px}.subtitle{color:var(--muted);font-size:15px;margin-top:5px}.gear{width:42px;height:42px;border:0;border-radius:14px;background:#fff;box-shadow:var(--shadow);font-size:20px}
+.segment{background:#e9edf4;padding:4px;border-radius:14px;display:grid;grid-template-columns:1fr 1fr;margin-bottom:14px}.segment button{border:0;background:transparent;border-radius:11px;padding:10px 12px;font-size:15px;font-weight:650;color:#475467}.segment button.active{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(16,24,40,.08)}
+.date-card{background:var(--card);border-radius:18px;padding:15px 16px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.date-main{font-size:17px;font-weight:750}.date-sub{font-size:13px;color:var(--muted);margin-top:4px}.pill{font-size:12px;font-weight:700;padding:7px 10px;border-radius:999px;background:var(--green2);color:#087443;white-space:nowrap}
+.classes{display:flex;flex-direction:column;gap:12px}.class-card{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden}.class-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--blue)}.class-card:nth-child(2):before{background:var(--purple)}.class-card:nth-child(3):before{background:var(--green)}.class-card:nth-child(4):before{background:var(--orange)}.row1{display:flex;gap:12px;align-items:flex-start}.time{font-size:16px;font-weight:800;min-width:105px}.subject{font-size:16px;font-weight:750;line-height:1.25}.meta{margin-top:11px;margin-left:117px;display:grid;gap:6px;color:#667085;font-size:14px}.type{display:inline-flex;width:max-content;padding:4px 8px;border-radius:999px;background:var(--blue2);color:#175cd3;font-size:12px;font-weight:700;margin-bottom:2px}.empty{background:#fff;border-radius:18px;padding:28px 18px;text-align:center;box-shadow:var(--shadow);color:var(--muted)}.empty .emoji{font-size:34px;margin-bottom:8px}.empty b{display:block;color:var(--text);font-size:17px;margin-bottom:5px}
+.week-head{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:var(--shadow);margin-bottom:14px}.nav{width:36px;height:36px;border:0;border-radius:12px;background:#f2f4f7;font-size:22px}.week-title{text-align:center;font-weight:750;font-size:15px}.week-sub{text-align:center;color:var(--muted);font-size:12px;margin-top:2px}.day{margin:18px 0 8px;font-size:17px;font-weight:800}.mini-list{background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.mini{display:grid;grid-template-columns:92px 1fr;gap:8px;padding:13px 14px;border-top:1px solid var(--line);font-size:14px}.mini:first-child{border-top:0}.mini .t{font-weight:750}.mini .s{font-weight:650;line-height:1.25}.mini .m{font-size:12px;color:var(--muted);margin-top:3px}.mini-empty{padding:16px;text-align:center;color:var(--muted);font-size:14px;background:#fff;border-radius:16px;box-shadow:var(--shadow)}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-top:1px solid #eaecf0;padding:8px max(18px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));z-index:20}.bottom-inner{max-width:560px;margin:auto;display:grid;grid-template-columns:1fr 1fr 1fr}.tab{border:0;background:transparent;color:#667085;font-size:11px;font-weight:650;padding:4px}.tab .ico{display:block;font-size:22px;margin-bottom:2px}.tab.active{color:var(--blue)}
+.info{display:none;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px;line-height:1.45}.info h3{margin:0 0 10px}.info p{margin:8px 0;color:#475467}.info small{color:#98a2b3}.badge{display:inline-block;background:#f2f4f7;border-radius:999px;padding:5px 8px;font-size:12px;font-weight:700;color:#475467}
+@media(max-width:390px){.app{padding-left:14px;padding-right:14px}.title{font-size:29px}.time{min-width:95px;font-size:15px}.meta{margin-left:107px}.subject{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div><div class="title">СР-426</div><div class="subtitle">Расписание занятий</div></div><button class="gear" id="infoBtn" aria-label="О приложении">ⓘ</button></div>
+  <div class="segment" id="segment"><button data-view="today" class="active">Сегодня</button><button data-view="week">Неделя</button></div>
+  <main id="todayView"></main><main id="weekView" style="display:none"></main>
+  <section class="info" id="infoView"><h3>О расписании</h3><p>Группа <b>СР-426</b>, 1 курс, очная форма обучения.</p><p>Осенний семестр: <b>01.09.2026–30.12.2026</b>.</p><p>Приложение автоматически определяет нечетную/четную учебную неделю и показывает нужные занятия.</p><p><span class="badge">Работает офлайн после первого открытия</span></p><small>Источник: загруженное расписание РГУ им. А. Н. Косыгина.</small></section>
+</div>
+<nav class="bottom"><div class="bottom-inner"><button class="tab active" data-tab="today"><span class="ico">▣</span>Сегодня</button><button class="tab" data-tab="week"><span class="ico">☷</span>Неделя</button><button class="tab" data-tab="info"><span class="ico">ⓘ</span>О приложении</button></div></nav>
+<script>
+const semesterStart=new Date(2026,7,31); // Monday of first academic week; 1 Sep is Tuesday
+const semesterEnd=new Date(2026,11,30);
+const ruDays=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+const monthGen=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const schedule={
+ odd:{
+  1:[
+   ['10:50–12:10','Технологии презентации рекламного креатива','Практика','6411','Кобозева Д.Л.'],
+   ['12:25–13:45','История России','Практика','6401','Гаврилов А.Ю.'],
+   ['17:40–19:00','Основы маркетинга','Лекция','Дистанционно','Андреева А.Л.']],
+  2:[
+   ['09:15–10:35','Основы теории коммуникации','Лекция','Дистанционно','Королева К.Ю.'],
+   ['10:50–12:10','Технологии самообразования и творческого саморазвития','Лекция','Дистанционно','Хлапотин Ю.Н.'],
+   ['16:05–17:25','Иностранный язык','Практика','6402','Преподаватель кафедры'],
+   ['17:40–19:00','Теория и история рекламы и связей с общественностью','Практика','1815','Хрусловский В.А.']],
+  3:[
+   ['12:25–13:45','Основы маркетинга','Практика','6111-1','Андреева А.Л.'],
+   ['14:25–15:45','Основы теории коммуникации','Практика','3319','Королева К.Ю.'],
+   ['16:05–17:25','Элективные дисциплины по физической культуре и спорту','Практика','Спорт. зал','Преподаватель кафедры']],
+  4:[],
+  5:[
+   ['14:25–15:45','Основы российской государственности','Практика','6401','Овечкина А.К.'],
+   ['16:05–17:25','Основы профессионального развития','Практика','6304','Гайтукаева Г.Р.']],
+  6:[['12:25–13:45','Основы маркетинга','Лекция','Дистанционно','Андреева А.Л.']],0:[]
+ },
+ even:{
+  1:[],
+  2:[
+   ['09:15–10:35','Технологии презентации рекламного креатива','Лекция','Дистанционно','Кобозева Д.Л.'],
+   ['16:05–17:25','Иностранный язык','Практика','6402','Преподаватель кафедры'],
+   ['17:40–19:00','Теория и история рекламы и связей с общественностью','Практика','1815','Хрусловский В.А.']],
+  3:[
+   ['10:50–12:10','Технологии самообразования и творческого саморазвития','Практика','6302','Хлапотин Ю.Н.'],
+   ['12:25–13:45','Основы маркетинга','Практика','6111-1','Андреева А.Л.'],
+   ['14:25–15:45','Основы теории коммуникации','Практика','3319','Королева К.Ю.'],
+   ['16:05–17:25','Элективные дисциплины по физической культуре и спорту','Практика','Спорт. зал','Преподаватель кафедры']],
+  4:[],
+  5:[
+   ['09:15–10:35','История рекламы и связей с общественностью','Лекция','Дистанционно','Хрусловский В.А.'],
+   ['10:50–12:10','Основы профессионального развития','Лекция','Дистанционно','Гайтукаева Г.Р.'],
+   ['14:25–15:45','Основы российской государственности','Практика','6401','Овечкина А.К.'],
+   ['16:05–17:25','Основы профессионального развития','Практика','6304','Гайтукаева Г.Р.']],
+  6:[],0:[]
+ }};
+function mondayOf(d){const x=new Date(d);x.setHours(0,0,0,0);const day=x.getDay();x.setDate(x.getDate()-(day===0?6:day-1));return x}
+function weekIndex(d){return Math.floor((mondayOf(d)-semesterStart)/604800000)+1}
+function parity(d){return weekIndex(d)%2===0?'even':'odd'}
+function fmtDate(d){return `${ruDays[d.getDay()]}, ${d.getDate()} ${monthGen[d.getMonth()]}`}
+function fmtRange(mon){const fri=new Date(mon);fri.setDate(fri.getDate()+5);return `${mon.getDate()} ${monthGen[mon.getMonth()]} — ${fri.getDate()} ${monthGen[fri.getMonth()]}`}
+function clsCard(c){return `<article class="class-card"><div class="row1"><div class="time">${c[0]}</div><div class="subject">${c[1]}</div></div><div class="meta"><span class="type">${c[2]}</span><span>⌖ ${c[3]}</span><span>♙ ${c[4]}</span></div></article>`}
+function miniCard(c){return `<div class="mini"><div class="t">${c[0]}</div><div><div class="s">${c[1]}</div><div class="m">${c[2]} · ${c[3]} · ${c[4]}</div></div></div>`}
+let selectedMonday=mondayOf(new Date());
+function renderToday(){const d=new Date();const p=parity(d),idx=weekIndex(d);const list=schedule[p][d.getDay()]||[];const inSemester=d>=new Date(2026,8,1)&&d<=semesterEnd;
+ document.getElementById('todayView').innerHTML=`<div class="date-card"><div><div class="date-main">${fmtDate(d)}</div><div class="date-sub">${idx>0?`${p==='odd'?'Нечетная':'Четная'} неделя · неделя ${idx}`:'До начала семестра'}</div></div><div class="pill">Сегодня</div></div>${!inSemester?`<div class="empty"><div class="emoji">📅</div><b>Сейчас вне периода семестра</b><span>Расписание рассчитано на 01.09–30.12.2026</span></div>`:list.length?`<div class="classes">${list.map(clsCard).join('')}</div>`:`<div class="empty"><div class="emoji">☕️</div><b>Сегодня пар нет</b><span>Можно выдохнуть</span></div>`}`}
+function renderWeek(){const p=parity(selectedMonday),idx=weekIndex(selectedMonday);let html=`<div class="week-head"><button class="nav" id="prev">‹</button><div><div class="week-title">${fmtRange(selectedMonday)}</div><div class="week-sub">${p==='odd'?'Нечетная':'Четная'} неделя · неделя ${idx}</div></div><button class="nav" id="next">›</button></div>`;
+ for(let day=1;day<=6;day++){const d=new Date(selectedMonday);d.setDate(d.getDate()+day-1);const list=schedule[p][day]||[];html+=`<div class="day">${fmtDate(d)}</div>${list.length?`<div class="mini-list">${list.map(miniCard).join('')}</div>`:`<div class="mini-empty">Пар нет</div>`}`}
+ document.getElementById('weekView').innerHTML=html;document.getElementById('prev').onclick=()=>{selectedMonday.setDate(selectedMonday.getDate()-7);renderWeek()};document.getElementById('next').onclick=()=>{selectedMonday.setDate(selectedMonday.getDate()+7);renderWeek()};}
+function show(view){document.getElementById('todayView').style.display=view==='today'?'block':'none';document.getElementById('weekView').style.display=view==='week'?'block':'none';document.getElementById('infoView').style.display=view==='info'?'block':'none';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===view));document.querySelectorAll('#segment button').forEach(x=>x.classList.toggle('active',x.dataset.view===view));document.getElementById('segment').style.display=view==='info'?'none':'grid';if(view==='today')renderToday();if(view==='week')renderWeek()}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>show(b.dataset.tab));document.getElementById('infoBtn').onclick=()=>show('info');
+renderToday();renderWeek();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script>
+</body></html>
